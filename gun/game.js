@@ -136,3 +136,17 @@ window.initGame = (React, assetsUrl) => {
 };
 
 console.log('Airplane Shooter game script loaded');
+
+React.createElement(
+  'div',
+  {
+    className: "player-airplane",
+    style: {
+      left: `${playerAirplane.x}%`,
+      top: `${playerAirplane.y}%`,
+      width: `${playerAirplane.width}px`,
+      height: `${playerAirplane.height}px`,
+    },
+  },
+  React.createElement('img', { src: `${assetsUrl}/player-airplane.png`, alt: "Player Airplane" })
+)
