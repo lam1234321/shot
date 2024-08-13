@@ -6,13 +6,37 @@ window.initGame = (React, assetsUrl) => {
   const AirplaneShooter = ({ assetsUrl }) => {
     const [airplanes, setAirplanes] = useState([]);
     const [score, setScore] = useState(0);
+    const [playerAirplane, setPlayerAirplane] = useState({ x: 50, y: 90, width: 50, height: 30 });
 
     useEffect(() => {
       const interval = setInterval(() => {
         spawnAirplane();
       }, 2000);
 
-      return () => clearInterval(interval);
+      const handleKeyDown = (event) => {
+        switch (event.key.toLowerCase()) {
+          case 'a':
+            movePlayerAirplane('left');
+            break;
+          case 'd':
+            movePlayerAirplane('right');
+            break;
+          case 'w':
+            movePlayerAirplane('up');
+            break;
+          case 's':
+            movePlayerAirplane('down');
+            break;
+          default:
+            break;
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        clearInterval(interval);
+        window.removeEventListener('keydown', handleKeyDown);
+      };
     }, []);
 
     const spawnAirplane = () => {
@@ -44,6 +68,23 @@ window.initGame = (React, assetsUrl) => {
       );
     };
 
+    const movePlayerAirplane = (direction) => {
+      setPlayerAirplane((prevPlayerAirplane) => {
+        let newX = prevPlayerAirplane.x;
+        let newY = prevPlayerAirplane.y;
+        if (direction === 'left') {
+          newX = Math.max(10, prevPlayerAirplane.x - 5);
+        } else if (direction === 'right') {
+          newX = Math.min(90, prevPlayerAirplane.x + 5);
+        } else if (direction === 'up') {
+          newY = Math.max(30, prevPlayerAirplane.y - 5);
+        } else if (direction === 'down') {
+          newY = Math.min(90, prevPlayerAirplane.y + 5);
+        }
+        return { ...prevPlayerAirplane, x: newX, y: newY };
+      });
+    };
+
     useEffect(() => {
       const interval = setInterval(moveAirplanes, 50);
       return () => clearInterval(interval);
@@ -71,8 +112,21 @@ window.initGame = (React, assetsUrl) => {
               },
               onClick: () => handleShoot(index),
             },
-            null
+            React.createElement('img', { src: `${assetsUrl}/airplane.png`, alt: "Airplane" })
           )
+        ),
+        React.createElement(
+          'div',
+          {
+            className: "player-airplane",
+            style: {
+              left: `${playerAirplane.x}%`,
+              top: `${playerAirplane.y}%`,
+              width: `${playerAirplane.width}px`,
+              height: `${playerAirplane.height}px`,
+            },
+          },
+          React.createElement('img', { src: `${assetsUrl}/player-airplane.png`, alt: "Player Airplane" })
         )
       )
     );
