@@ -1,0 +1,31 @@
+.airplane-shooter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
+  
+  .score {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .game-area {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-color: #87ceeb;
+    overflow: hidden;
+  }
+  
+  .airplane {
+    position: absolute;
+    background-image: url('airplane.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
